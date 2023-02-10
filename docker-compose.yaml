@@ -1,0 +1,60 @@
+version: "3.3"
+services:
+  nginx-reverse-proxy:
+    build:
+      context: "./"
+      dockerfile: "Dockerfile-reverse-proxy"
+    ports:
+      - "443:443"
+      - "80:80"
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    restart: unless-stopped
+    volumes:
+      - ./alananetwork.private.crt:/etc/nginx/ssl/alananetwork.private.crt
+      - ./alananetwork.private.key:/etc/nginx/ssl/alananetwork.private.key
+    networks:
+      - proxy
+      - services
+
+  nginx-webserver:
+    build:
+      context: "./"
+      dockerfile: "Dockerfile-webserver"
+    expose:
+      - "3000"
+    restart: unless-stopped
+    networks:
+      - services
+
+  nginx-cdn-signed-proxy:
+    build:
+      context: "./"
+      dockerfile: "Dockerfile-cdn-signed-proxy"
+    expose:
+      - "4000"
+    restart: unless-stopped
+    environment: 
+      KEY: ${KEY}
+    networks:
+      - services
+
+  url-signer-service:
+    build: 
+      context: "./url-signer/"
+      dockerfile: "Dockerfile"
+      args: 
+        KEY: ${KEY}
+    expose: 
+      - "5000"
+    restart: unless-stopped
+    networks:
+      - services
+
+networks:
+  proxy:
+    driver: bridge
+  services:
+    driver: bridge

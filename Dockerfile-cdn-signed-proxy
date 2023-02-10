@@ -1,0 +1,26 @@
+FROM nginx:1.23.3-alpine
+
+ARG KEY
+
+RUN apk update --no-cache && \
+    apk upgrade --no-cache && \
+    apk add --no-cache openssl
+
+RUN touch /var/run/nginx.pid && \
+        chown -R nginx:nginx /var/run/nginx.pid
+
+RUN chown -R nginx:nginx /etc/nginx/ && \ 
+    chown -R nginx:nginx /var/log/nginx/ && \ 
+    chown -R nginx:nginx /var/cache/nginx/
+
+USER nginx
+
+COPY --chown=nginx:nginx nginx/ /etc/nginx/
+
+RUN find /etc/nginx/sites-available/ -type f -not -name 'pre-signed-url-reverse-proxy.conf.template' -delete
+
+EXPOSE 4000
+
+COPY cdn-signed-proxy-entrypoint.sh /etc/nginx
+ENTRYPOINT ["/etc/nginx/cdn-signed-proxy-entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,15 @@
+server {
+    listen              4000; #TLS offloading on reverse proxy!
+    listen              [::]:4000;
+    server_name         cdn.alananetwork.private;
+
+    location ^~ /file {
+       secure_link $arg_md5,$arg_expires;
+       secure_link_md5 "${KEY}-$uri-$secure_link_expires";
+       
+       if ($secure_link = "")  { return 403; }
+       if ($secure_link = "0") { return 410; } #Time expired
+
+        return 200;
+    }
+}

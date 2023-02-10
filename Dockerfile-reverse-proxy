@@ -1,0 +1,31 @@
+FROM nginx:1.23.3-alpine
+
+RUN apk update --no-cache && \
+    apk upgrade --no-cache && \
+    apk add --no-cache openssl
+
+RUN touch /var/run/nginx.pid && \
+        chown -R nginx:nginx /var/run/nginx.pid
+
+RUN mkdir -p /etc/nginx/ssl && \ 
+    chown -R nginx:nginx /etc/nginx/ && \ 
+    chown -R nginx:nginx /var/log/nginx/ && \ 
+    chown -R nginx:nginx /var/cache/nginx/
+
+USER nginx
+
+COPY  --chown=nginx:nginx nginx/ /etc/nginx/
+
+RUN find /etc/nginx/sites-available/ -type f -not -name 'reverse-proxy.conf' -delete
+
+RUN rm /etc/nginx/sites-enabled/* && \ 
+    ln -s '/etc/nginx/sites-available/reverse-proxy.conf' /etc/nginx/sites-enabled/reverse-proxy.conf
+
+#RUN  openssl req -x509 -nodes -days 365 \
+#        -subj  "/C=XX/ST=XX/O=Alana Inc/CN=*.test.example.com" \
+#        -newkey rsa:2048 -keyout /etc/nginx/ssl/test.example.com.key \
+#        -out /etc/nginx/ssl/test.example.com.crt;
+
+EXPOSE 80 443
+
+CMD ["nginx", "-g", "daemon off;"]

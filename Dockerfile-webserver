@@ -1,0 +1,31 @@
+FROM nginx:1.23.3-alpine
+
+RUN apk update --no-cache && \
+    apk upgrade --no-cache && \
+    apk add --no-cache openssl
+
+RUN touch /var/run/nginx.pid && \
+        chown -R nginx:nginx /var/run/nginx.pid
+
+RUN chown -R nginx:nginx /etc/nginx/ && \ 
+    chown -R nginx:nginx /var/log/nginx/ && \ 
+    chown -R nginx:nginx /var/cache/nginx/
+
+RUN mkdir -p /var/www/webserver/static && \ 
+    chown -R nginx:nginx /var/www/webserver/static
+
+USER nginx
+
+COPY --chown=nginx:nginx nginx/ /etc/nginx/
+COPY --chown=nginx:nginx static/* /var/www/webserver/static
+
+RUN chmod 755 /var/www/webserver/static/*
+
+RUN find /etc/nginx/sites-available/ -type f -not -name 'webserver.conf' -delete
+
+RUN rm /etc/nginx/sites-enabled/* && \ 
+    ln -s '/etc/nginx/sites-available/webserver.conf' /etc/nginx/sites-enabled/webserver.conf
+
+EXPOSE 3000
+
+CMD ["nginx", "-g", "daemon off;"]
