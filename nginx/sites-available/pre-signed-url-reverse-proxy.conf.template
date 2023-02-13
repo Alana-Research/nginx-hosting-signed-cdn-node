@@ -1,3 +1,7 @@
+upstream cdn-file-host {
+    server cdn-file-host:6000;
+}
+
 server {
     listen              4000; #TLS offloading on reverse proxy!
     listen              [::]:4000;
@@ -10,6 +14,8 @@ server {
        if ($secure_link = "")  { return 403; }
        if ($secure_link = "0") { return 410; } #Time expired
 
-        return 200;
+       proxy_pass          http://cdn-file-host;
+       proxy_set_header    Host $host;    
+       include             conf.d/proxy.conf;
     }
 }
