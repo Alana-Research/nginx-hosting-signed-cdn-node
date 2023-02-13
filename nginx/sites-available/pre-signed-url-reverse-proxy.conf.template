@@ -17,5 +17,6 @@ server {
        proxy_pass          http://cdn-file-host;
        proxy_set_header    Host $host;    
        include             conf.d/proxy.conf;
+       add_header X-Cache-Status $upstream_cache_status;
     }
 }
