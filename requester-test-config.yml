@@ -1,0 +1,52 @@
+https://web.alananetwork.private:
+  httpUrl: https://web.alananetwork.private
+  expectedStatusCodes: ["200"]
+  ignoreTLSError: True
+
+https://alananetwork.private:
+  httpUrl: https://alananetwork.private
+  expectedStatusCodes: ["301", "200"]
+  ignoreTLSError: True
+
+http://alananetwork.private:
+  httpUrl: http://alananetwork.private
+  expectedStatusCodes: ["301", "200"]
+  ignoreTLSError: True
+
+http://web.alananetwork.private:
+  httpUrl: http://web.alananetwork.private
+  expectedStatusCodes: ["301", "200"]
+  ignoreTLSError: True
+
+https://web.alananetwork.private/notFounD:
+  httpUrl: https://web.alananetwork.private/notFounD
+  expectedStatusCodes: ["404"]
+  ignoreTLSError: True
+
+https://web.alananetwork.private/image:
+  httpUrl: https://web.alananetwork.private/image
+  expectedStatusCodes: ["200"]
+  ignoreTLSError: True
+
+http://cdn.alananetwork.private:
+  httpUrl: http://cdn.alananetwork.private
+  expectedStatusCodes: ["301", "404"]
+  ignoreTLSError: True
+
+https://cdn.alananetwork.private/generate:
+  httpUrl: https://cdn.alananetwork.private/generate
+  expectedStatusCodes: ["400"]
+  ignoreTLSError: True
+
+https://cdn.alananetwork.private/generate with headers:
+  httpUrl: https://cdn.alananetwork.private/generate
+  httpHeaders: 
+    - "X-file": "awesome.png"
+  expectedStatusCodes: ["200"]
+  ignoreTLSError: True
+
+Signed key non access:
+  httpUrl: https://cdn.alananetwork.private/file/awesomeFile.txt?md5=UdDOveRVLWX31IqgNIA&expires=16760632671
+  expectedStatusCodes: ["403"]
+  ignoreTLSError: True
+
