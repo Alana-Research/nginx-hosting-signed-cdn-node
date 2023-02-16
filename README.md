@@ -2,22 +2,14 @@
 
 This is a multi service node configuration to allow any Alana Network user to run a node to share a webpage or an edge CDN with pre-signed key access.
 
-## Documentation
-
-- Alana network standard node service components
-- Example system architectures and automated deployments:
-  - Single node with docker compose.
-  - AWS HA and fault tolerant with ECS/EC2.
-  - Kubernetes and EKS.
-
-## Alana network standard node service components
-
+<p align="center" >
+<img src="./components.png" alt="components" width="550"/>
+</p>
 
 ## Example system architectures and automated deployments
 
-### Single node with docker compose
+- Single node with docker compose
 
-...
 
   ```sh
   #1. Create a local TLS certificate (will be used the network CA when available):
