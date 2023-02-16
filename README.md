@@ -1,14 +1,15 @@
 # Alana Network nginx-hosting-signed-cdn-node
 
-This is a multi service node configured in docker compose too allow any Alana Network user to run a node to share a webpage or a CDN with pre-signed key access.
+This is a multi service node configuration to allow any Alana Network user to run a node to share a webpage or an edge CDN with pre-signed key access.
 
-## Node architecture
+<p align="center" >
+<img src="./components.png" alt="components" width="550"/>
+</p>
 
-//TODO: diagram...
+## Example system architectures and automated deployments
 
-## How to run 
+- Single node with docker compose
 
-- Docker Compose: 
 
   ```sh
   #1. Create a local TLS certificate (will be used the network CA when available):
@@ -18,3 +19,12 @@ This is a multi service node configured in docker compose too allow any Alana Ne
   #3. Deploy locally using docker compose:
   make run
   ```
+
+### AWS HA and fault tolerant with ECS/EC2
+
+TODO (WIP)
+
+### Kubernetes and EKS
+
+TODO (WIP)
+
