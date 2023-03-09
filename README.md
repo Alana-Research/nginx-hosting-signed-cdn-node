@@ -13,7 +13,7 @@ This is a multi service node configuration to allow any Alana Network user to ru
 
   ```sh
   #1. Create a local TLS certificate (will be used the network CA when available):
-  openssl req -x509 -nodes -days 365 -subj  "/C=XX/ST=XX/O=Alana Inc/CN=*.alananetwork.private" -newkey rsa:2048 -keyout alananetwork.private.key -out alananetwork.private.crt
+  openssl req -x509 -nodes -days 365 -subj  "/C=XX/ST=XX/O=Alana Inc/CN=*.alananetwork.private" -newkey rsa:2048 -keyout "alananetwork.private.key" -out "alananetwork.private.crt"
   #2. Modify the nginx files as you need.
   #3. Create a .env file in the root folder and add yoour signing key if you need it: KEY="xxxx"
   #3. Deploy locally using docker compose:
